@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Kebiasaan — Daily Habit Tracker</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/tracker" class="nav-brand">
+      <span>✨ Daily Habit Tracker</span>
+    </a>
+    <div class="nav-links">
+      <a href="/tracker" class="nav-link">📊 Tracker & Grafik</a>
+      <a href="/habits" class="nav-link active">⚙️ Kelola Kebiasaan</a>
+      <span id="user-display" class="user-pill">Pengguna</span>
+      <button id="btn-logout" class="btn btn-secondary btn-sm">Keluar</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div id="alert-box" style="display: none;"></div>
+
+    <!-- Card Tambah / Edit Kebiasaan -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h2 id="form-title" class="card-title">Tambah Jenis Kebiasaan Baru</h2>
+          <p class="card-desc">Tentukan jenis kebiasaan, jenis parameter (angka atau Ya/Tidak), dan target yang ingin dibangun.</p>
+        </div>
+        <button id="btn-cancel-edit" class="btn btn-secondary btn-sm" style="display: none;">Batal Edit</button>
+      </div>
+
+      <form id="habit-form">
+        <input type="hidden" id="habit-id" value="">
+        
+        <!-- Pilihan Tipe Parameter -->
+        <div class="form-group" style="background: var(--gray-100); padding: 0.85rem 1rem; border-radius: 8px; border: 1px solid var(--gray-200); margin-bottom: 1.25rem;">
+          <label class="form-label" style="margin-bottom: 0.5rem;">Tipe Parameter Capaian *</label>
+          <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-size: 0.95rem; font-weight: 500;">
+              <input type="radio" name="habit-type" value="numeric" checked>
+              <span>🔢 <b>Target Angka</b> (contoh: 8 gelas, 30 menit, 10 halaman)</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-size: 0.95rem; font-weight: 500;">
+              <input type="radio" name="habit-type" value="boolean">
+              <span>🔘 <b>Opsi Ya / Tidak</b> (contoh: Sholat Berjamaah, Bangun Subuh, Tidak Merokok)</span>
+            </label>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="habit-name">Nama Kebiasaan *</label>
+            <input type="text" id="habit-name" class="form-control" placeholder="Contoh: Minum Air Putih, Sholat Subuh" required>
+          </div>
+
+          <!-- Parameter Khusus Tipe Angka -->
+          <div class="form-group field-numeric">
+            <label class="form-label" for="habit-target">Target Capaian Harian *</label>
+            <input type="number" step="any" min="0.1" id="habit-target" class="form-control" placeholder="Contoh: 8, 30, 10">
+          </div>
+          <div class="form-group field-numeric">
+            <label class="form-label" for="habit-unit">Satuan Parameter *</label>
+            <input type="text" id="habit-unit" class="form-control" placeholder="Contoh: gelas, menit, halaman">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="habit-desc">Deskripsi / Catatan Tambahan (Opsional)</label>
+          <input type="text" id="habit-desc" class="form-control" placeholder="Catatan motivasi atau rincian pelaksanaan kebiasaan">
+        </div>
+
+        <button type="submit" id="btn-submit-habit" class="btn btn-primary" style="margin-top: 0.5rem;">
+          Simpan Kebiasaan
+        </button>
+      </form>
+    </div>
+
+    <!-- Daftar Kebiasaan -->
+    <div class="card">
+      <h2 class="card-title">Daftar Kebiasaan Saya</h2>
+      <p class="card-desc">Semua parameter kebiasaan yang sedang Anda jalankan.</p>
+
+      <div id="habit-list-loading" style="text-align: center; padding: 2rem; color: var(--gray-600);">
+        Memuat daftar kebiasaan...
+      </div>
+
+      <div id="habit-grid" class="habit-grid" style="display: none;"></div>
+
+      <div id="habit-empty" style="display: none; text-align: center; padding: 3rem 1rem; color: var(--gray-600);">
+        <p style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Belum ada kebiasaan yang dibuat</p>
+        <p style="font-size: 0.9rem;">Gunakan form di atas untuk menambahkan kebiasaan harian pertama Anda!</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/habits.js"></script>
+</body>
+</html>

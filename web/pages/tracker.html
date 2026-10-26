@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tracker & Grafik Capaian — Daily Habit Tracker</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Chart.js via CDN untuk visualisasi grafik perkembangan -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/tracker" class="nav-brand">
+      <span>✨ Daily Habit Tracker</span>
+    </a>
+    <div class="nav-links">
+      <a href="/tracker" class="nav-link active">📊 Tracker & Grafik</a>
+      <a href="/habits" class="nav-link">⚙️ Kelola Kebiasaan</a>
+      <span id="user-display" class="user-pill">Pengguna</span>
+      <button id="btn-logout" class="btn btn-secondary btn-sm">Keluar</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div id="alert-box" style="display: none;"></div>
+
+    <!-- Filter Tanggal & Ringkasan -->
+    <div class="card" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+      <div>
+        <h2 class="card-title" style="margin-bottom: 0.2rem;">Pencatatan Capaian Harian</h2>
+        <p class="card-desc" style="margin-bottom: 0;">Isi nilai capaian atau pilih Ya/Tidak untuk tanggal yang dipilih.</p>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <label for="tracker-date" style="font-weight: 600; font-size: 0.88rem; color: var(--gray-700);">Tanggal:</label>
+        <input type="date" id="tracker-date" class="form-control" style="width: auto; font-weight: 600;">
+      </div>
+    </div>
+
+    <!-- Daftar Input Capaian per Kebiasaan -->
+    <div class="card">
+      <h3 class="card-title" style="font-size: 1.15rem;">Capaian Kebiasaan Hari Ini</h3>
+      <p class="card-desc">Perbarui nilai capaian Anda dan klik simpan pada masing-masing kebiasaan.</p>
+
+      <div id="tracker-loading" style="text-align: center; padding: 2rem; color: var(--gray-600);">
+        Memuat data kebiasaan & catatan...
+      </div>
+
+      <div id="tracker-empty" style="display: none; text-align: center; padding: 2.5rem 1rem; color: var(--gray-600);">
+        <p style="font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem;">Belum ada jenis kebiasaan yang dibuat</p>
+        <p style="margin-bottom: 1rem;">Silakan buat jenis kebiasaan terlebih dahulu untuk mulai melacak capaian harian.</p>
+        <a href="/habits" class="btn btn-primary btn-sm">+ Buat Kebiasaan Sekarang</a>
+      </div>
+
+      <div id="tracker-list" style="display: none; display: flex; flex-direction: column; gap: 1rem;"></div>
+    </div>
+
+    <!-- Grafik Perkembangan Progress -->
+    <div class="card">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+        <div>
+          <h2 class="card-title" style="margin-bottom: 0.2rem;">Grafik Perkembangan Capaian</h2>
+          <p id="chart-subtitle" class="card-desc" style="margin-bottom: 0;">Pantau konsistensi capaian dari waktu ke waktu.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;">
+          <div style="display: flex; align-items: center; gap: 0.4rem;">
+            <label for="select-chart-range" style="font-weight: 600; font-size: 0.85rem; color: var(--gray-700);">Rentang:</label>
+            <select id="select-chart-range" class="form-control" style="width: auto; font-size: 0.88rem;">
+              <option value="30" selected>1 Bulan (30 Hari)</option>
+              <option value="14">2 Minggu (14 Hari)</option>
+              <option value="7">1 Minggu (7 Hari)</option>
+            </select>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.4rem;">
+            <label for="select-habit-chart" style="font-weight: 600; font-size: 0.85rem; color: var(--gray-700);">Tampilan:</label>
+            <select id="select-habit-chart" class="form-control" style="width: auto; min-width: 220px; font-size: 0.88rem;"></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Area Kanvas Grafik -->
+      <div style="position: relative; width: 100%; min-height: 320px; max-height: 420px;">
+        <canvas id="habitChart"></canvas>
+      </div>
+
+      <div id="chart-empty" style="display: none; text-align: center; padding: 3rem 1rem; color: var(--gray-600);">
+        Belum ada riwayat capaian. Mulai isi capaian di atas untuk melihat visualisasi grafik perkembangannya!
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/tracker.js"></script>
+</body>
+</html>
