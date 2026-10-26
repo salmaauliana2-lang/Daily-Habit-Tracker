@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -21,8 +20,12 @@ func main() {
 		log.Println("[INFO] File .env tidak ditemukan, membaca environment bawaan sistem.")
 	}
 
-	port := os.Getenv("APP_PORT")
-	if strings.TrimSpace(port) == "" {
+	// UBAH: utamakan PORT dari platform hosting, lalu APP_PORT lokal, lalu 8080
+	port := strings.TrimSpace(os.Getenv("PORT"))
+	if port == "" {
+		port = strings.TrimSpace(os.Getenv("APP_PORT"))
+	}
+	if port == "" {
 		port = "8080"
 	}
 
@@ -33,6 +36,11 @@ func main() {
 	}
 
 	router := gin.Default()
+
+	// UBAH: hilangkan peringatan "trusted all proxies"
+	if err := router.SetTrustedProxies(nil); err != nil {
+		log.Printf("[WARN] Gagal mengatur trusted proxies: %v", err)
+	}
 
 	// Melayani file statis CSS dan JS
 	router.Static("/css", "./web/css")
@@ -84,8 +92,9 @@ func main() {
 		}
 	}
 
-	address := fmt.Sprintf(":%s", port)
-	log.Printf("[INFO] Server Daily Habit Tracker berjalan di http://localhost%s\n", address)
+	// UBAH: listen di semua interface dan tampilkan port yang benar-benar dipakai
+	address := "0.0.0.0:" + port
+	log.Printf("[INFO] Server Daily Habit Tracker berjalan di port %s\n", port)
 	if err := router.Run(address); err != nil {
 		log.Fatalf("[FATAL] Gagal menjalankan server: %v", err)
 	}
